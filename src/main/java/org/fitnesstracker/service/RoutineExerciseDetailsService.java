@@ -1,4 +1,4 @@
 package org.fitnesstracker.service;
 
-public class ExerciseRoutineDetailsService {
+public class RoutineExerciseDetailsService {
 }

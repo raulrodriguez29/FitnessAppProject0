@@ -6,7 +6,7 @@ public class Exercise {
     private int exerciseId;
     private String name;
     private String targetMuscle;
-    private int caloriesPerMin; // Data from the DB schema
+    private int caloriesPerMin;
 
     public int getExerciseId() {
         return exerciseId;

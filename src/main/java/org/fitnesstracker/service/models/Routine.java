@@ -6,30 +6,12 @@ import java.util.Objects;
 
 public class Routine {
     private int routineId;
-    private int userId; // Foreign Key: Links this routine to its creator (User)
+    private int userId;
     private String routineName;
     private String difficultyLevel;
 
-    // This transient field holds the many-to-many relationship data
-    // when a routine is fully loaded from the database.
     private List<RoutineExerciseDetails> exercises = new ArrayList<>();
 
-    // Constructor for LOADING from the database
-    public Routine(int routineId, int userId, String routineName, String difficultyLevel) {
-        this.routineId = routineId;
-        this.userId = userId;
-        this.routineName = routineName;
-        this.difficultyLevel = difficultyLevel;
-    }
-
-    // Constructor for CREATING a NEW routine
-    public Routine(int userId, String routineName, String difficultyLevel) {
-        this.userId = userId;
-        this.routineName = routineName;
-        this.difficultyLevel = difficultyLevel;
-    }
-
-    // --- Getters and Setters ---
 
     public int getRoutineId() {
         return routineId;
