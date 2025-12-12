@@ -1,19 +1,22 @@
-package org.fitnesstracker.service.models;
+package org.fitnesstracker.repository.entities;
+
+import org.fitnesstracker.service.models.Exercise;
+import org.fitnesstracker.service.models.RoutineExerciseDetails;
 
 import java.util.Objects;
 
-public class RoutineExerciseDetails {
+public class RoutineExerciseDetailsEntity {
     private Exercise exercise;
     private int sets;
     private int reps;
 
-    public RoutineExerciseDetails(Exercise exercise, int sets, int reps) {
+    public RoutineExerciseDetailsEntity(Exercise exercise, int sets, int reps) {
         this.exercise = exercise;
         this.sets = sets;
         this.reps = reps;
     }
 
-    public RoutineExerciseDetails() {
+    public RoutineExerciseDetailsEntity() {
     }
 
     public Exercise getExercise() {
@@ -42,7 +45,7 @@ public class RoutineExerciseDetails {
 
     @Override
     public String toString() {
-        return "RoutineExerciseDetails{" +
+        return "RoutineExerciseDetailsEntity{" +
                 "exercise=" + exercise +
                 ", sets=" + sets +
                 ", reps=" + reps +
@@ -52,7 +55,7 @@ public class RoutineExerciseDetails {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        RoutineExerciseDetails that = (RoutineExerciseDetails) o;
+        RoutineExerciseDetailsEntity that = (RoutineExerciseDetailsEntity) o;
         return sets == that.sets && reps == that.reps && Objects.equals(exercise, that.exercise);
     }
 

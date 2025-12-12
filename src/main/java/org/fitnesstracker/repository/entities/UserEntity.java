@@ -1,22 +1,24 @@
-package org.fitnesstracker.service.models;
+package org.fitnesstracker.repository.entities;
+
+import org.fitnesstracker.service.models.User;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class User {
+public class UserEntity {
     private int userId;
     private String username;
     private String email;
     private LocalDateTime joinDate;
 
-    public User(int userId, String username, String email, LocalDateTime joinDate) {
+    public UserEntity(int userId, String username, String email, LocalDateTime joinDate) {
         this.userId = userId;
         this.username = username;
         this.email = email;
         this.joinDate = joinDate;
     }
 
-    public User() {
+    public UserEntity() {
     }
 
     public int getUserId() {
@@ -53,7 +55,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserEntity{" +
                 "userId=" + userId +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
@@ -64,8 +66,8 @@ public class User {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return userId == user.userId && Objects.equals(username, user.username) && Objects.equals(email, user.email) && Objects.equals(joinDate, user.joinDate);
+        UserEntity that = (UserEntity) o;
+        return userId == that.userId && Objects.equals(username, that.username) && Objects.equals(email, that.email) && Objects.equals(joinDate, that.joinDate);
     }
 
     @Override

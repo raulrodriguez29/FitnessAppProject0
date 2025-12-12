@@ -1,21 +1,21 @@
-package org.fitnesstracker.service.models;
+package org.fitnesstracker.repository.entities;
 
 import java.util.Objects;
 
-public class Exercise {
+public class ExerciseEntity {
     private int exerciseId;
     private String name;
     private String targetMuscle;
     private int caloriesPerMin;
 
-    public Exercise(String name, int exerciseId, String targetMuscle, int caloriesPerMin) {
+    public ExerciseEntity(String name, int exerciseId, String targetMuscle, int caloriesPerMin) {
         this.name = name;
         this.exerciseId = exerciseId;
         this.targetMuscle = targetMuscle;
         this.caloriesPerMin = caloriesPerMin;
     }
 
-    public Exercise() {
+    public ExerciseEntity() {
     }
 
     public int getExerciseId() {
@@ -52,7 +52,7 @@ public class Exercise {
 
     @Override
     public String toString() {
-        return "Exercise{" +
+        return "ExerciseEntity{" +
                 "exerciseId=" + exerciseId +
                 ", name='" + name + '\'' +
                 ", targetMuscle='" + targetMuscle + '\'' +
@@ -63,8 +63,8 @@ public class Exercise {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Exercise exercise = (Exercise) o;
-        return exerciseId == exercise.exerciseId && caloriesPerMin == exercise.caloriesPerMin && Objects.equals(name, exercise.name) && Objects.equals(targetMuscle, exercise.targetMuscle);
+        ExerciseEntity that = (ExerciseEntity) o;
+        return exerciseId == that.exerciseId && caloriesPerMin == that.caloriesPerMin && Objects.equals(name, that.name) && Objects.equals(targetMuscle, that.targetMuscle);
     }
 
     @Override

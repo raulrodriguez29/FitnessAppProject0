@@ -1,10 +1,12 @@
-package org.fitnesstracker.service.models;
+package org.fitnesstracker.repository.entities;
+
+import org.fitnesstracker.service.models.RoutineExerciseDetails;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Routine {
+public class RoutineEntity {
     private int routineId;
     private int userId;
     private String routineName;
@@ -12,7 +14,7 @@ public class Routine {
 
     private List<RoutineExerciseDetails> exercises = new ArrayList<>();
 
-    public Routine(int routineId, int userId, String difficultyLevel, String routineName, List<RoutineExerciseDetails> exercises) {
+    public RoutineEntity(int routineId, int userId, String difficultyLevel, String routineName, List<RoutineExerciseDetails> exercises) {
         this.routineId = routineId;
         this.userId = userId;
         this.difficultyLevel = difficultyLevel;
@@ -20,7 +22,7 @@ public class Routine {
         this.exercises = exercises;
     }
 
-    public Routine() {
+    public RoutineEntity() {
     }
 
     public int getRoutineId() {
@@ -65,7 +67,7 @@ public class Routine {
 
     @Override
     public String toString() {
-        return "Routine{" +
+        return "RoutineEntity{" +
                 "routineId=" + routineId +
                 ", userId=" + userId +
                 ", routineName='" + routineName + '\'' +
@@ -77,8 +79,8 @@ public class Routine {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Routine routine = (Routine) o;
-        return routineId == routine.routineId && userId == routine.userId && Objects.equals(routineName, routine.routineName) && Objects.equals(difficultyLevel, routine.difficultyLevel) && Objects.equals(exercises, routine.exercises);
+        RoutineEntity that = (RoutineEntity) o;
+        return routineId == that.routineId && userId == that.userId && Objects.equals(routineName, that.routineName) && Objects.equals(difficultyLevel, that.difficultyLevel) && Objects.equals(exercises, that.exercises);
     }
 
     @Override
@@ -86,4 +88,3 @@ public class Routine {
         return Objects.hash(routineId, userId, routineName, difficultyLevel, exercises);
     }
 }
-
