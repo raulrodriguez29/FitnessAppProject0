@@ -56,9 +56,9 @@ public class UserDAO implements DAOInterface<UserEntity> {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    System.out.println("ID from DB: " + rs.getInt("user_id"));
-                    System.out.println("Email from DB: " + rs.getString("email"));
-                    System.out.println("Date from DB: " + rs.getTimestamp("join_date"));
+                    //System.out.println("ID from DB: " + rs.getInt("user_id")); USED TO DEBUG
+                    //System.out.println("Email from DB: " + rs.getString("email"));
+                    //System.out.println("Date from DB: " + rs.getTimestamp("join_date"));
                     return Optional.of(mapRowToUser(rs));
                 }
             }
