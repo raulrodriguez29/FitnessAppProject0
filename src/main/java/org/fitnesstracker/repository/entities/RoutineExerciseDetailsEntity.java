@@ -1,29 +1,27 @@
 package org.fitnesstracker.repository.entities;
 
-import org.fitnesstracker.service.models.Exercise;
-import org.fitnesstracker.service.models.RoutineExerciseDetails;
-
 import java.util.Objects;
 
 public class RoutineExerciseDetailsEntity {
-    private Exercise exercise;
+    private ExerciseEntity exercise;
+
     private int sets;
     private int reps;
 
-    public RoutineExerciseDetailsEntity(Exercise exercise, int sets, int reps) {
+    public RoutineExerciseDetailsEntity() {
+    }
+
+    public RoutineExerciseDetailsEntity(ExerciseEntity exercise, int sets, int reps) {
         this.exercise = exercise;
         this.sets = sets;
         this.reps = reps;
     }
 
-    public RoutineExerciseDetailsEntity() {
-    }
-
-    public Exercise getExercise() {
+    public ExerciseEntity getExercise() {
         return exercise;
     }
 
-    public void setExercise(Exercise exercise) {
+    public void setExercise(ExerciseEntity exercise) {
         this.exercise = exercise;
     }
 
@@ -45,7 +43,7 @@ public class RoutineExerciseDetailsEntity {
 
     @Override
     public String toString() {
-        return "RoutineExerciseDetailsEntity{" +
+        return "RoutineExerciseDetails{" +
                 "exercise=" + exercise +
                 ", sets=" + sets +
                 ", reps=" + reps +

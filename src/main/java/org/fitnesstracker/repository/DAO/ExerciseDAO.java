@@ -10,19 +10,28 @@ import java.util.Optional;
 
 public class ExerciseDAO implements DAOInterface<ExerciseEntity> {
 
-    private Connection connection = ConnectionHandler.getConnection();
+    private ExerciseEntity mapRowToExercise(ResultSet rs) throws SQLException {
+        ExerciseEntity entity = new ExerciseEntity();
+        entity.setExerciseId(rs.getInt("exercise_id"));
+        entity.setName(rs.getString("name"));
+        entity.setTargetMuscle(rs.getString("target_muscle"));
+        entity.setCaloriesPerMin(rs.getInt("calories_per_min"));
+        return entity;
+    }
 
+    // --- 1. CREATE ---
     @Override
     public Integer create(ExerciseEntity exerciseEntity) throws SQLException {
+        String sql = "INSERT INTO exercises (name, target_muscle, calories_per_min) VALUES (?, ?, ?) RETURNING exercise_id";
 
-        String sql = "INSERT INTO exercises (exercises) VALUES (?) RETURNING exercise_id";
-
-        try(PreparedStatement stmt = connection.prepareStatement(sql)){
-
+        try (Connection connection = ConnectionHandler.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, exerciseEntity.getName());
+            stmt.setString(2, exerciseEntity.getTargetMuscle());
+            stmt.setInt(3, exerciseEntity.getCaloriesPerMin());
 
-            try(ResultSet rs = stmt.executeQuery()){
-                if(rs.next()){
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
                     return rs.getInt("exercise_id");
                 }
             }
@@ -30,76 +39,85 @@ public class ExerciseDAO implements DAOInterface<ExerciseEntity> {
         return null;
     }
 
+    // --- 2. FIND BY ID ---
     @Override
-    public Optional<ExerciseEntity> findById(Integer id) throws SQLException {
+    public Optional<ExerciseEntity> findById(Integer exerciseId) throws SQLException {
         String sql = "SELECT * FROM exercises WHERE exercise_id = ?";
 
-        try(PreparedStatement stmt = connection.prepareStatement(sql)){
-            stmt.setInt(1, id);
+        try (Connection connection = ConnectionHandler.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, exerciseId);
 
-            try(ResultSet rs = stmt.executeQuery()){
-                if(rs.next()){
-                    ExerciseEntity exerciseEntity = new ExerciseEntity();
-                    exerciseEntity.setExerciseId(rs.getInt("exercise_id"));
-                    exerciseEntity.setName(rs.getString("name"));
-                    exerciseEntity.setTargetMuscle(rs.getString("target_muscle"));
-                    exerciseEntity.setCaloriesPerMin(rs.getInt("calories_per_min"));
-
-                    return Optional.of(exerciseEntity);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapRowToExercise(rs));
                 }
             }
         }
         return Optional.empty();
     }
 
+    // --- Custom: FIND BY NAME ---
+    public Optional<ExerciseEntity> findByName(String name) throws SQLException {
+        String sql = "SELECT * FROM exercises WHERE name = ?";
+
+        try (Connection connection = ConnectionHandler.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, name);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapRowToExercise(rs));
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    // --- 3. FIND ALL ---
     @Override
     public List<ExerciseEntity> findAll() throws SQLException {
         List<ExerciseEntity> exercises = new ArrayList<>();
-
         String sql = "SELECT * FROM exercises";
-        try(Statement stmt = connection.createStatement()){
-            ResultSet rs = stmt.executeQuery(sql);
 
-            while(rs.next()){
-                ExerciseEntity exerciseEntity = new ExerciseEntity();
-                exerciseEntity.setExerciseId(rs.getInt("exercise_id"));
-                exerciseEntity.setName(rs.getString("name"));
-                exerciseEntity.setTargetMuscle(rs.getString("target_muscle"));
-                exerciseEntity.setCaloriesPerMin(rs.getInt("calories_per_min"));
-                exercises.add(exerciseEntity);
+        try (Connection connection = ConnectionHandler.getConnection();
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                exercises.add(mapRowToExercise(rs));
             }
         }
         return exercises;
     }
 
+    // --- 4. UPDATE BY ID ---
     @Override
-    public ExerciseEntity updateById(ExerciseEntity entity) throws SQLException {
-        return null;
-    }
+    public ExerciseEntity updateById(ExerciseEntity exerciseEntity) throws SQLException {
+        String sql = "UPDATE exercises SET name = ?, target_muscle = ?, calories_per_min = ? WHERE exercise_id = ?";
 
-    @Override
-    public void deleteById(Integer id) throws SQLException {
+        try (Connection connection = ConnectionHandler.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
 
-    }
+            stmt.setString(1, exerciseEntity.getName());
+            stmt.setString(2, exerciseEntity.getTargetMuscle());
+            stmt.setInt(3, exerciseEntity.getCaloriesPerMin());
+            stmt.setInt(4, exerciseEntity.getExerciseId());
 
-    public Optional<ExerciseEntity> findByExerciseName(String exerciseName) throws SQLException {
-        String sql = "SELECT * FROM exercises WHERE name = ?";
-
-        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setString(1, exerciseName);
-
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    ExerciseEntity exerciseEntity = new ExerciseEntity();
-                    exerciseEntity.setExerciseId(rs.getInt("exercise_id"));
-                    exerciseEntity.setName(rs.getString("name"));
-                    exerciseEntity.setTargetMuscle(rs.getString("target_muscle"));
-                    exerciseEntity.setCaloriesPerMin(rs.getInt("calories_per_min"));
-
-                    return Optional.of(exerciseEntity);
-                }
-            }
+            int rowsAffected = stmt.executeUpdate();
+            return (rowsAffected > 0) ? exerciseEntity : null;
         }
-        return Optional.empty();
+    }
+
+    // --- 5. DELETE BY ID ---
+    @Override
+    public boolean deleteById(Integer exerciseId) throws SQLException {
+        String sql = "DELETE FROM exercises WHERE exercise_id = ?";
+
+        try (Connection connection = ConnectionHandler.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, exerciseId);
+            return stmt.executeUpdate() > 0;
+        }
     }
 }

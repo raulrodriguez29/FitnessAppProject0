@@ -8,7 +8,7 @@ public class ExerciseEntity {
     private String targetMuscle;
     private int caloriesPerMin;
 
-    public ExerciseEntity(String name, int exerciseId, String targetMuscle, int caloriesPerMin) {
+    public ExerciseEntity(int exerciseId, String name, String targetMuscle, int caloriesPerMin) {
         this.name = name;
         this.exerciseId = exerciseId;
         this.targetMuscle = targetMuscle;

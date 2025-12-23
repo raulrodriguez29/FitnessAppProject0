@@ -4,16 +4,17 @@ import java.util.Objects;
 
 public class RoutineExerciseDetails {
     private Exercise exercise;
-    private int sets;
-    private int reps;
+
+    int sets;
+    int reps;
+
+    public RoutineExerciseDetails() {
+    }
 
     public RoutineExerciseDetails(Exercise exercise, int sets, int reps) {
         this.exercise = exercise;
         this.sets = sets;
         this.reps = reps;
-    }
-
-    public RoutineExerciseDetails() {
     }
 
     public Exercise getExercise() {

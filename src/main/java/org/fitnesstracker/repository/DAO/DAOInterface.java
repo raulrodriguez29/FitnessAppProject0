@@ -18,5 +18,5 @@ public interface DAOInterface<T> {
     // UPDATE
     public T updateById(T entity) throws SQLException;
     // DELETE
-    public void deleteById(Integer id) throws SQLException;
+    public boolean deleteById(Integer id) throws SQLException;
 }

@@ -4,45 +4,36 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionHandler {
-    private static Connection connection;
+    private static final Properties properties = new Properties();
 
+    // Only load the properties ONCE when the class is first loaded
     static {
-        if (connection == null){
-            Properties properties = new Properties();
-
-            try (InputStream input = ConnectionHandler.class.getClassLoader().getResourceAsStream("database.properties")){
-
-                if(input == null){
-                    throw new Exception("Unable to find database.properties");
-                }else{
-                    properties.load(input);
-                }
-
-                // Load JDBC Driver
-                Class.forName(properties.getProperty("db.driver"));
-
-                connection = DriverManager.getConnection(
-                        properties.getProperty("db.url"),
-                        properties.getProperty("db.username"),
-                        properties.getProperty("db.password")
-                );
-
-            }catch(IOException | ClassNotFoundException e){
-                throw new RuntimeException("Failed to load database configuration");
-            }catch(Exception e){
-                throw new RuntimeException(e);
+        try (InputStream input = ConnectionHandler.class.getClassLoader().getResourceAsStream("database.properties")) {
+            if (input == null) {
+                throw new RuntimeException("Unable to find database.properties");
             }
+            properties.load(input);
+            // Load JDBC Driver once
+            Class.forName(properties.getProperty("db.driver"));
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException("Failed to load database configuration", e);
         }
     }
 
-    public static Connection getConnection() throws RuntimeException {
-        if(connection == null){
-            throw new RuntimeException("Connection failed to setup correctly");
+    // Now this returns a BRAND NEW connection every time it is called
+    public static Connection getConnection() {
+        try {
+            return DriverManager.getConnection(
+                    properties.getProperty("db.url"),
+                    properties.getProperty("db.username"),
+                    properties.getProperty("db.password")
+            );
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to connect to the database", e);
         }
-
-        return connection;
     }
 }

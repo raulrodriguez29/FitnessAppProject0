@@ -1,7 +1,5 @@
 package org.fitnesstracker.repository.entities;
 
-import org.fitnesstracker.service.models.RoutineExerciseDetails;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,9 +10,9 @@ public class RoutineEntity {
     private String routineName;
     private String difficultyLevel;
 
-    private List<RoutineExerciseDetails> exercises = new ArrayList<>();
+    private List<RoutineExerciseDetailsEntity> exercises = new ArrayList<>();
 
-    public RoutineEntity(int routineId, int userId, String difficultyLevel, String routineName, List<RoutineExerciseDetails> exercises) {
+    public RoutineEntity(int routineId, int userId, String difficultyLevel, String routineName, List<RoutineExerciseDetailsEntity> exercises) {
         this.routineId = routineId;
         this.userId = userId;
         this.difficultyLevel = difficultyLevel;
@@ -57,11 +55,11 @@ public class RoutineEntity {
         this.difficultyLevel = difficultyLevel;
     }
 
-    public List<RoutineExerciseDetails> getExercises() {
+    public List<RoutineExerciseDetailsEntity> getExercises() {
         return exercises;
     }
 
-    public void setExercises(List<RoutineExerciseDetails> exercises) {
+    public void setExercises(List<RoutineExerciseDetailsEntity> exercises) {
         this.exercises = exercises;
     }
 
